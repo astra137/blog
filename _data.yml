@@ -1,0 +1,12 @@
+lang: en
+home:
+  welcome: Hello.
+menu_links: []
+metas:
+  site: astra137
+  description: Web and game development
+  title: =title
+  image: =image
+  twitter: '@'
+  lang: en
+  generator: false
