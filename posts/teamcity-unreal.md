@@ -9,9 +9,9 @@ tags:
   - devops
 comments: {}
 ---
-The goal: build Unreal Engine game artifacts for Windows using an existing Fedora Linux dedicated server and TeamCity.
+The goal: build Unreal Engine game artifacts for Windows using an existing Fedora Linux dedicated server and TeamCity. TL;DR: TeamCity is great. Run the agent in a VM.
 
-TL;DR: TeamCity is great. Run the agent in a VM.
+<!--more -->
 
 ## Why use a VM?
 
@@ -28,7 +28,7 @@ While experimenting and looking at TeamCity agent logs, I got the vibe that the 
 - Install TeamCity agent
 - Configure the build in TeamCity
 - ???
-- Glorious Victory for Managed Democracy 
+- Glorious Victory for Managed Democracy
 
 Warning: I have no idea what the performance implications are. I don't know what the legal complexities are. These are my research notes to determine if the solution is viable for some friends.
 

@@ -3,8 +3,8 @@ home:
   welcome: Hello.
 menu_links: []
 metas:
-  site: astra137
-  description: Web and game development
+  site: astra137:log
+  description: Web and game development blog
   title: =title
   image: =image
   twitter: '@'
