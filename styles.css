@@ -9,10 +9,45 @@
 @import "css/comments.css";
 
 
-/* Make the links black */
+[data-theme=dark] {
+	--color-base: #ccc;
+	--color-text: #ededed;
+	--color-dim: #888;
+	--color-line: #29303d;
+	--color-background: #000;
+	--color-highlight: hsl(0, 0%, 3%);
+	--color-primary: #27b537;
+	--color-primary-highlight: #f66f6f;
+	--code-text: var(--color-base);
+	--code-comment: grey;
+	--code-token-1: #5ec4ff;
+	--code-token-2: #d65cd6;
+	--code-token-3: #75b3f0;
+	--code-token-4: #52e081;
+	--code-inserted: #8c9966;
+	--code-deleted: #d16a47;
+	--code-border: var(--color-line);
+	--code-background: var(--color-highlight);
+	--code-background-selection: hsla(0, 0%, 93%, .15);
+	color-scheme: dark
+}
+
+
 :root {
-  --color-link: var(--color-base);
-  --color-link-hover: var(--color-dim);
+	--color-link: var(--color-text);
+  --color-link-hover: var(--color-primary);
+	--pagefind-ui-scale: 0.8;
+	--pagefind-ui-background: none;
+	--pagefind-ui-border-width: 2px;
+	--pagefind-ui-primary: var(--color-text);
+}
+
+a {
+	transition: color .2s ease;
+}
+
+video {
+	max-width: 100%;
 }
 
 /* Page layout */
@@ -30,3 +65,18 @@ main {
 .search {
   margin-top: var(--row-gap-xsmall);
 }
+
+pre code.hljs{display:block;overflow-x:auto;padding:1em}
+.hljs-comment,.hljs-meta{color:#565f89}
+.hljs-deletion,.hljs-doctag,.hljs-regexp,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-selector-pseudo,.hljs-tag,.hljs-template-tag,.hljs-variable.language_{color:#f7768e}
+.hljs-link,.hljs-literal,.hljs-number,.hljs-params,.hljs-template-variable,.hljs-type,.hljs-variable{color:#ff9e64}
+.hljs-attribute,.hljs-built_in{color:#e0af68}
+.hljs-keyword,.hljs-property,.hljs-subst,.hljs-title,.hljs-title.class_,.hljs-title.class_.inherited__,.hljs-title.function_{color:#7dcfff}
+.hljs-selector-tag{color:#73daca}
+.hljs-addition,.hljs-bullet,.hljs-quote,.hljs-string,.hljs-symbol{color:#9ece6a}
+.hljs-code,.hljs-formula,.hljs-section{color:#7aa2f7}
+.hljs-attr,.hljs-char.escape_,.hljs-keyword,.hljs-name,.hljs-operator{color:#bb9af7}
+.hljs-punctuation{color:#c0caf5}
+.hljs{background:var(--code-background);color:var(--code-text)}
+.hljs-emphasis{font-style:italic}
+.hljs-strong{font-weight:700}

@@ -1,11 +1,12 @@
 lang: en
-home:
-  welcome: ''
+home: {}
 metas:
-  site: 'blog.astra137.dev'
+  site: blog.astra137.dev
   description: Web and game development blog
   title: =title
   image: =image
-  twitter: ''
   lang: en
   generator: false
+menu_links:
+  - text: astra137.dev
+    href: 'https://astra137.dev'
