@@ -9,40 +9,26 @@ tags:
 comments:
   src: 'https://social.lol/@astra/110850531245882005'
 ---
-I created stylized magic glyphs from a conlang font by using multichannel signed
-distance fields in Godot Engine 4.
+I created stylized magic glyphs from a conlang font by using multichannel signed distance fields in Godot Engine 4.
 
 <video src="/uploads/msdf_animated.webm" controls loop muted title="blue glowing symbol meaning ante in toki pona"></video>
 
 <!--more -->
 
-Watch
-[Martin Donald's _Glyphs, shapes, fonts, signed distance fields_](https://www.youtube.com/watch?v=1b5hIMqz_wM)
-and you'll understand why I was so curious about a new toggle in
-StandardMaterial3D resources in Godot Engine's version 4 beta releases.
+Watch [Martin Donald's _Glyphs, shapes, fonts, signed distance fields_](https://www.youtube.com/watch?v=1b5hIMqz_wM) and you'll understand why I was so curious about a new toggle in StandardMaterial3D resources in Godot Engine's version 4 beta releases.
 
-![Screenshot, Godot StandardMaterial3D Texture MSDF checkbox](/uploads/msdf_material_flag.png)
+![Screenshot, StandardMaterial3D Texture MSDF checkbox](/uploads/msdf_material_flag.png)
 
-The easiest way to use multichannel signed distance fields in Godot is while
-importing fonts.
+> The easiest way to use MSDFs in Godot is while importing fonts.
+>
+> ![Screenshot, font import MSDF checkbox](/uploads/msdf_font_import_flag.png)
 
-![Screenshot, Godot font import checkbox for multichannel signed distance field](/uploads/msdf_font_import_flag.png)
-
-The goal: I wanted to use
-[jackhumbert's toki pona font](https://github.com/jackhumbert/sitelen-pona-pona)
-to create magic glyphs that worked like Label3D, but stylized with my own
+The goal: I wanted to use [jackhumbert's toki pona font](https://github.com/jackhumbert/sitelen-pona-pona) to create magic glyphs that worked like Label3D, but stylized with my own
 shader.
 
 The problem: Imported fonts and Label3D do not have easily customizable shaders.
 
-I decided to investigate rendering the font without Label3D.
-[Juan mentioned](https://twitter.com/reduzio/status/1431326129244327945) the
-[merge request that adds MSDF support for fonts](https://github.com/godotengine/godot/pull/51908),
-which revealed that Godot created MSDFs from fonts using
-[Chlumsky/msdfgen](https://github.com/Chlumsky/msdfgen). An
-[online font inspector](https://opentype.js.org/font-inspector.html) helped me
-extract a list of ligature glyph codes (`sitelen-pona-pona.json` in the script
-below). I automated executing msdfgen for each glyph.
+I decided to investigate rendering the font without Label3D. [Juan mentioned](https://twitter.com/reduzio/status/1431326129244327945) the [merge request that adds MSDF support for fonts](https://github.com/godotengine/godot/pull/51908), which revealed that Godot created MSDFs from fonts using [Chlumsky/msdfgen](https://github.com/Chlumsky/msdfgen). An [online font  inspector](https://opentype.js.org/font-inspector.html) helped me extract a list of ligature glyph codes (`sitelen-pona-pona.json` in the script below). I automated executing msdfgen for each glyph.
 
 ```js
 import { ensureDir } from 'https://deno.land/std/fs/ensure_dir.ts'
@@ -77,35 +63,29 @@ for (const { ligGlyph } of lig.subtables[0].ligatureSets[0]) {
 }
 ```
 
-> Experiment with msdfgen options like `msdf` versus `mtsdf`, `-size` 32 versus
-> 48, and `-autoframe` versus not.
+> Experiment with msdfgen options like `msdf` versus `mtsdf`, `-size` 32 versus 48, and `-autoframe` versus not.
 
-At this point, the generated MSDF images can be used as albedo textures in
-StandardMaterial3D with MSDF and transparency enabled. The following screenshot
-shows an unshaded material with alpha scissor.
+> The generated MSDF images look like rainbow versions of the glyphs:
+> 
+> ![Abstract, multichannel signed distance field generated from ante glyph](/uploads/msdf_90.png)
+
+At this point, the generated MSDF images can be used as albedo textures in StandardMaterial3D with MSDF and transparency enabled. The following screenshot shows an unshaded material with alpha scissor.
 
 ![Screenshot, MSDF rendered with StandardMaterial3D](/uploads/msdf_demo_default.png)
 
-StandardMaterial3D resources can be right-clicked and converted into
-ShaderMaterials and then customized.
+StandardMaterial3D resources can be right-clicked and converted into ShaderMaterials and then customized.
 
 ![Screenshot, StandardMaterial3D right-click menu with option for Convert to ShaderMaterial](/uploads/msdf_convert_to_shader.png)
 
-As an experiment, I used simplex noise and the red and green channels of the
-MSDF to animate and stylize the glyphs somewhat according to their shape.
-
-![Screenshot, MSDF rendered with custom shader](/uploads/msdf_demo_custom.png)
+As an experiment, I used simplex noise and the red and green channels of the MSDF to animate and stylize the glyphs somewhat according to their shape.
 
 ```glsl
-// NOTE: Shader automatically converted from Godot Engine 4.1.1.stable's StandardMaterial3D.
-
 shader_type spatial;
 render_mode cull_disabled, unshaded;
 uniform vec4 albedo : source_color;
 uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
 uniform float msdf_pixel_range = 4;
 uniform float msdf_outline_size = 0;
-
 
 vec3 hash_nearzero(vec3 p) {
 	const uint UI0 = 1597334673U;
@@ -185,13 +165,6 @@ float msdf_median(float r, float g, float b, float a) {
 	return min(max(min(r, g), min(max(r, g), b)), a);
 }
 
-void vertex() {
-	// Billboard
-	//MODELVIEW_MATRIX = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], INV_VIEW_MATRIX[1], INV_VIEW_MATRIX[2], MODEL_MATRIX[3]);
-	//MODELVIEW_MATRIX = MODELVIEW_MATRIX * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0, 0, 0), vec4(0, length(MODEL_MATRIX[1].xyz), 0, 0), vec4(0, 0, length(MODEL_MATRIX[2].xyz), 0), vec4(0, 0, 0, 1));
-	//MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
-}
-
 void fragment() {
 	vec2 base_uv = UV;
 	vec4 albedo_tex_pre = texture(texture_albedo,base_uv);
@@ -215,3 +188,5 @@ void fragment() {
 	ALPHA *= albedo.a * albedo_tex.a;
 }
 ```
+
+![Screenshot, MSDF rendered with custom shader](/uploads/msdf_demo_custom.png)
