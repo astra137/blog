@@ -2,14 +2,17 @@
 title: Semi-realistic star cluster in Godot
 date: '2023-06-21'
 draft: false
-tags: []
+tags:
+  - gamedev
+  - godot
+  - shader
 comments: {}
 ---
 An experiment in using semi-realistic cosmic data in Godot Engine. https://github.com/astra137/godot-star-cluster
 
 ![stars rendered in Godot Engine](/uploads/godot-star-cluster.png)
 
-<!--more -->
+<!-- more -->
 
 > I exported this project for web once, but it looks much less pretty. Use WASD to move, mousewheel to change speed, and 1-3 to fly to preset stars.
 >
